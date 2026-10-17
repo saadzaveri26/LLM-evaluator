@@ -48,6 +48,7 @@ export interface RunListItem {
   status: string;
   models: string[];
   prompt_count: number;
+  first_prompt?: string;
 }
 
 export interface RunModelItem {

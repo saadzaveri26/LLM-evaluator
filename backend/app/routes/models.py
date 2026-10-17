@@ -10,8 +10,26 @@ from app.schemas import CloudModel, JudgeInfo, LocalModel, ModelsResponse
 
 router = APIRouter(prefix="/api", tags=["models"])
 
+NON_CHAT_KEYWORDS = (
+    "guard",
+    "safeguard",
+    "moderation",
+    "whisper",
+    "tts",
+    "playai",
+    "orpheus",
+    "embed",
+    "transcribe",
+    "rerank",
+)
+
 _cached_cloud: list[CloudModel] = []
 _last_fetch = 0.0
+
+
+def _is_chat(name: str) -> bool:
+    nl = name.lower()
+    return not any(k in nl for k in NON_CHAT_KEYWORDS)
 
 
 async def _fetch_cloud() -> list[CloudModel]:
@@ -33,7 +51,7 @@ async def _fetch_cloud() -> list[CloudModel]:
             return [
                 CloudModel(provider="groq", name=m.name)
                 for m in mods
-                if "whisper" not in m.name
+                if _is_chat(m.name)
             ]
         except Exception:
             return []
@@ -51,6 +69,7 @@ async def _fetch_cloud() -> list[CloudModel]:
             return [
                 CloudModel(provider="openrouter", name=m.name)
                 for m in mods
+                if _is_chat(m.name)
             ]
         except Exception:
             return []

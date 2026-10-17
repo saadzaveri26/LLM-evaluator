@@ -57,6 +57,7 @@ class RunListItem(BaseModel):
     status: str
     models: list[str]
     prompt_count: int
+    first_prompt: str = ""
 
 
 class RunModelItem(BaseModel):

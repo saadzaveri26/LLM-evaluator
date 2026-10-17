@@ -9,9 +9,9 @@ const schibsted = Schibsted_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "ModelFit — Find the Smallest Good-Enough Local Model",
+  title: "ModelFit",
   description:
-    "Benchmarking engine and trustworthy evaluation sheet for local LLMs.",
+    "Find the smallest local model that is good enough for your prompts, and audit the judge that picked it.",
 };
 
 export default function RootLayout({

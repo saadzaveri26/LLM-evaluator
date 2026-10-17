@@ -5,28 +5,34 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --color-paper: #EEF1F4;
+  --color-panel: #F9FAFC;
   --color-paper-light: #F7F9FB;
   --color-ink: #101B33;
+  --color-ink-raised: #1B2A4D;
   --color-rule: #C9D0DB;
   --color-cobalt: #2748F5;
+  --color-cobalt-tint: #DCE3FF;
   --color-flare: #F4511E;
+  --color-flare-tint: #FFE3D9;
   --color-moss: #1F7A5A;
+  --color-moss-tint: #D7EEE4;
 
   --color-background: #EEF1F4;
   --color-foreground: #101B33;
-  --color-card: #F7F9FB;
+  --color-card: #F9FAFC;
   --color-card-foreground: #101B33;
-  --color-popover: #F7F9FB;
+  --color-popover: #F9FAFC;
   --color-popover-foreground: #101B33;
   --color-primary: #2748F5;
   --color-primary-foreground: #FFFFFF;
   --color-secondary: #EEF1F4;
   --color-secondary-foreground: #101B33;
   --color-muted: #EEF1F4;
-  --color-muted-foreground: #5C677D;
-  --color-accent: #EEF1F4;
-  --color-accent-foreground: #101B33;
+  --color-muted-foreground: #475569;
+  --color-accent: #DCE3FF;
+  --color-accent-foreground: #2748F5;
   --color-destructive: #F4511E;
   --color-border: #C9D0DB;
   --color-input: #C9D0DB;
@@ -37,18 +43,18 @@
 :root {
   --background: #EEF1F4;
   --foreground: #101B33;
-  --card: #F7F9FB;
+  --card: #F9FAFC;
   --card-foreground: #101B33;
-  --popover: #F7F9FB;
+  --popover: #F9FAFC;
   --popover-foreground: #101B33;
   --primary: #2748F5;
   --primary-foreground: #FFFFFF;
   --secondary: #EEF1F4;
   --secondary-foreground: #101B33;
   --muted: #EEF1F4;
-  --muted-foreground: #5C677D;
-  --accent: #EEF1F4;
-  --accent-foreground: #101B33;
+  --muted-foreground: #475569;
+  --accent: #DCE3FF;
+  --accent-foreground: #2748F5;
   --destructive: #F4511E;
   --border: #C9D0DB;
   --input: #C9D0DB;
@@ -56,9 +62,82 @@
   --radius: 2px;
 }
 
+html,
 body {
+  font-family: var(--font-sans);
   background-color: var(--background);
   color: var(--foreground);
+  font-variant-numeric: normal;
+  font-feature-settings: normal;
+  letter-spacing: normal;
+  word-spacing: normal;
+}
+
+.num {
   font-feature-settings: "tnum";
   font-variant-numeric: tabular-nums;
+}
+
+.bg-grid {
+  background-color: #EEF1F4;
+  background-image:
+    linear-gradient(to right, rgba(201, 208, 219, 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(201, 208, 219, 0.45) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+@keyframes draw-ring {
+  from {
+    stroke-dashoffset: 120;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-ring {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: draw-ring 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ring {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]:focus-visible {
+  outline: 2px solid #2748F5;
+  outline-offset: 3px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #101B33;
+  cursor: pointer;
+  border: 2px solid #EEF1F4;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #101B33;
+  cursor: pointer;
+  border: 2px solid #EEF1F4;
 }

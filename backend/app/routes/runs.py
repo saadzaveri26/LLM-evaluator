@@ -74,6 +74,7 @@ async def list_runs(
             c.get("model") for c in cfg.get("cloud", [])
         ]
         prompts = cfg.get("prompts", [])
+        first_text = prompts[0].get("text", "") if prompts else ""
         items.append(
             RunListItem(
                 id=r["id"],
@@ -81,6 +82,7 @@ async def list_runs(
                 status=r["status"],
                 models=mods,
                 prompt_count=len(prompts),
+                first_prompt=first_text,
             )
         )
     return items
