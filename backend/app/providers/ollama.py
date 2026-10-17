@@ -24,6 +24,8 @@ class OllamaProvider:
         }
         if options:
             payload["options"] = options
+        if "format" in opts and opts["format"] is not None:
+            payload["format"] = opts["format"]
         if "keep_alive" in opts and opts["keep_alive"] is not None:
             payload["keep_alive"] = opts["keep_alive"]
 
