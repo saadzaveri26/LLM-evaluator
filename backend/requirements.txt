@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+httpx
+pydantic
+pydantic-settings
+sse-starlette
+aiosqlite
+numpy
+scipy
+pytest
+pytest-asyncio
+respx
+python-dotenv
