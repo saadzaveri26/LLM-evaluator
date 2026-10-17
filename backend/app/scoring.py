@@ -1,7 +1,8 @@
-import json
 import statistics
+
 import aiosqlite
 import numpy as np
+
 from app.config import settings
 from app.events import bus
 

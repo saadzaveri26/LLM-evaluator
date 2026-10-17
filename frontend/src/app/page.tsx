@@ -54,7 +54,7 @@ export default function NewRunPage() {
           setSelectedLocal(data.local.slice(0, 4).map((m) => m.name));
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setError("Ollama is not running. Start it with ollama serve, then try again.");
       });
   }, []);
@@ -164,8 +164,9 @@ export default function NewRunPage() {
         temperature: 0.2,
       });
       router.push(`/run/${res.id}`);
-    } catch (err: any) {
-      setError(err.message || "Failed to start benchmark");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to start benchmark";
+      setError(msg);
       setSubmitting(false);
     }
   };

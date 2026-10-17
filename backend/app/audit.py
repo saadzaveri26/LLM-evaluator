@@ -1,13 +1,14 @@
 import json
 import random
 import re
+
 import aiosqlite
 import numpy as np
 from scipy.stats import pearsonr, spearmanr
+
 from app.config import settings
 from app.events import bus
 from app.judge import get_judge_provider
-from app.providers.openai_compat import OpenAICompatProvider
 
 PAIRWISE_SYSTEM_PROMPT = """You compare two answers to the same task. Pick the better one.
 Length is not quality. Penalise padding and missing requirements.

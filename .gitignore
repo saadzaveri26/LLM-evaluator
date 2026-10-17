@@ -34,3 +34,5 @@ Thumbs.db
 .vscode/
 .idea/
 *.log
+.agents/skills/.*/
+.agents/skills/skills-lock.json

@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from app.config import settings
 from app.providers.ollama import OllamaProvider
 from app.providers.openai_compat import OpenAICompatProvider

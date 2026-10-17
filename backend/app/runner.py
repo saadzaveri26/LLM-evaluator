@@ -1,9 +1,10 @@
 import asyncio
-from datetime import datetime, timezone
 import json
 import re
 import time
+
 import aiosqlite
+
 from app.config import settings
 from app.events import bus
 from app.providers.base import Chunk, Provider
@@ -31,7 +32,10 @@ async def get_provider(provider_name: str) -> Provider:
     return OllamaProvider(settings.ollama_host)
 
 
-async def start_run_task(run_id: str) -> None:
+_job_lock = asyncio.Lock()
+
+
+async def run_job(run_id: str) -> None:
     async with aiosqlite.connect(settings.db_path) as db:
         db.row_factory = aiosqlite.Row
 
@@ -260,3 +264,8 @@ async def start_run_task(run_id: str) -> None:
             await db.commit()
             bus.publish(run_id, "phase", {"phase": "done"})
             bus.publish(run_id, "done", {})
+
+
+async def start_run_task(run_id: str) -> None:
+    async with _job_lock:
+        await run_job(run_id)

@@ -55,8 +55,9 @@ function RunContent({
   const [selectedPromptIdx, setSelectedPromptIdx] = useState<number>(0);
   const [blindMode, setBlindMode] = useState<boolean>(false);
 
+  const isDone = run?.status === "done";
   useEffect(() => {
-    if (!run || run.status !== "done") return;
+    if (!isDone) return;
     const timer = setTimeout(() => {
       getRecommendation(id, {
         quality: qualityW,
@@ -69,7 +70,7 @@ function RunContent({
         .catch(() => {});
     }, 200);
     return () => clearTimeout(timer);
-  }, [id, run?.status, qualityW, speedW, memoryW, axis, threshold]);
+  }, [id, isDone, qualityW, speedW, memoryW, axis, threshold]);
 
   const handleStopRun = async () => {
     try {
@@ -178,7 +179,6 @@ function RunContent({
   const doneResponses = run?.responses.length || 0;
   const doneScores = run?.scores.length || 0;
 
-  const isDone = run?.status === "done";
   const isRunning = run?.status === "running" || run?.status === "queued";
 
   const allModelNames = [
@@ -708,7 +708,7 @@ function RunContent({
                         </div>
                         {score.rationale && (
                           <div className="italic text-[#101B33] border-t border-[#C9D0DB]/60 pt-1">
-                            "{score.rationale}"
+                            &ldquo;{score.rationale}&rdquo;
                           </div>
                         )}
                       </div>

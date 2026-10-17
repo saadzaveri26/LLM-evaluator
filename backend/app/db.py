@@ -1,5 +1,7 @@
 from collections.abc import AsyncIterator
+
 import aiosqlite
+
 from app.config import settings
 
 

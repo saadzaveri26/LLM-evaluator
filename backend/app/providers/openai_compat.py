@@ -1,6 +1,8 @@
-from collections.abc import AsyncIterator
 import json
+from collections.abc import AsyncIterator
+
 import httpx
+
 from app.providers.base import Chunk, ModelInfo
 
 
@@ -50,7 +52,7 @@ class OpenAICompatProvider:
                             item = json.loads(data_str)
                         except Exception:
                             continue
-                        if "usage" in item and item["usage"]:
+                        if item.get("usage"):
                             usage = item["usage"]
                         choices = item.get("choices", [])
                         if choices:

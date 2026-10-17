@@ -1,17 +1,16 @@
 import asyncio
-from datetime import datetime, timezone
 import json
 import secrets
-from typing import Any
+from datetime import UTC, datetime
+
 import aiosqlite
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sse_starlette.sse import EventSourceResponse
+
 from app.db import get_db
 from app.events import bus
 from app.runner import start_run_task
 from app.schemas import (
-    BestModel,
-    GoodEnoughModel,
     RecommendationResponse,
     ResponseItem,
     RunCreateRequest,
@@ -39,7 +38,7 @@ async def create_run(
         )
 
     run_id = secrets.token_urlsafe(6)
-    created_at = datetime.now(timezone.utc).isoformat()
+    created_at = datetime.now(UTC).isoformat()
     config_json = json.dumps(body.model_dump())
 
     await db.execute(

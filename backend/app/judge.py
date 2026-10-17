@@ -1,8 +1,9 @@
-import asyncio
 import json
 import random
 import re
+
 import aiosqlite
+
 from app.config import settings
 from app.events import bus
 from app.providers.base import Provider
@@ -184,7 +185,7 @@ async def start_judge_phase(run_id: str) -> None:
                 ]
 
                 parsed: dict | None = None
-                for attempt in range(3):
+                for _ in range(3):
                     raw_text = ""
                     try:
                         async for chunk in judge_provider.stream(

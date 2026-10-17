@@ -1,6 +1,8 @@
-from collections.abc import AsyncIterator
 import json
+from collections.abc import AsyncIterator
+
 import httpx
+
 from app.providers.base import Chunk, ModelInfo
 
 

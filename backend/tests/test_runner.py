@@ -1,9 +1,11 @@
-from collections.abc import AsyncIterator
 import json
+from collections.abc import AsyncIterator
+
 import aiosqlite
 import httpx
 import pytest
 import respx
+
 from app.config import settings
 from app.db import init_db
 from app.runner import start_run_task
@@ -43,14 +45,14 @@ async def test_runner_two_models_two_prompts() -> None:
         + "\n"
     )
 
-    chat_route = respx.post(f"{host}/api/chat").mock(
+    respx.post(f"{host}/api/chat").mock(
         return_value=httpx.Response(
             200,
             content=ndjson_body.encode(),
             headers={"content-type": "application/x-ndjson"},
         )
     )
-    ps_route = respx.get(f"{host}/api/ps").mock(
+    respx.get(f"{host}/api/ps").mock(
         return_value=httpx.Response(
             200,
             json={

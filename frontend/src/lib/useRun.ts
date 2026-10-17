@@ -11,14 +11,9 @@ export function useRun(runId: string | null) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!runId) {
-      setRun(null);
-      return;
-    }
+    if (!runId) return;
 
     let isMounted = true;
-    setLoading(true);
-    setError(null);
 
     getRun(runId)
       .then((data) => {
