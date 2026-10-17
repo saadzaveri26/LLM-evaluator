@@ -252,50 +252,14 @@ async def get_recommendation(
     db: aiosqlite.Connection = Depends(get_db),
 ) -> RecommendationResponse:
     run_detail = await get_run(id, db)
-    models = run_detail.summary
-    if not models:
-        return RecommendationResponse(
-            best=BestModel(model="", reason="No models evaluated"),
-            good_enough=GoodEnoughModel(
-                model="", reason="No models evaluated", threshold=threshold
-            ),
-            ranking=[],
-            frontier=[],
-            axis=axis,
-        )
+    if not run_detail.summary:
+        raise HTTPException(status_code=409, detail="Run has no summary yet")
 
-    best_m = max(models, key=lambda m: m.quality)
-    good_m = best_m
-    for m in sorted(models, key=lambda m: m.mem_gb):
-        if m.quality >= best_m.quality * threshold:
-            good_m = m
-            break
+    from app.scoring import compute_recommendation_data
 
-    ranking = [
-        {
-            "model": m.model,
-            "score": round(
-                (m.quality * quality + m.tps * speed - m.mem_gb * memory) / 10.0,
-                2,
-            ),
-            "quality": m.quality,
-            "tps": m.tps,
-            "mem_gb": m.mem_gb,
-        }
-        for m in sorted(models, key=lambda x: x.quality, reverse=True)
-    ]
-
-    return RecommendationResponse(
-        best=BestModel(
-            model=best_m.model,
-            reason=f"Highest quality score ({best_m.quality}/10)",
-        ),
-        good_enough=GoodEnoughModel(
-            model=good_m.model,
-            reason=f"Within {int(threshold * 100)}% quality using {good_m.mem_gb} GB memory",
-            threshold=threshold,
-        ),
-        ranking=ranking,
-        frontier=[m.model for m in sorted(models, key=lambda x: x.mem_gb)],
-        axis=axis,
+    sum_dicts = [s.model_dump() for s in run_detail.summary]
+    res_data = compute_recommendation_data(
+        sum_dicts, quality, speed, memory, axis, threshold
     )
+    return RecommendationResponse(**res_data)
+
